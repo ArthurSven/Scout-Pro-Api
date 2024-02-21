@@ -2,6 +2,8 @@ package com.devapps.scoutProMalawi.data.models;
 
 import jakarta.persistence.*;
 
+import java.sql.Blob;
+
 @Entity
 public class Agent {
 
@@ -31,7 +33,7 @@ public class Agent {
     private String date_joined;
 
     @Column
-    private String agent_picture;
+    private Blob agent_picture;
 
 
     public Long getAgent_id() {
@@ -58,7 +60,7 @@ public class Agent {
         return password;
     }
 
-    public String getAgent_picture() {
+    public Blob getAgent_picture() {
         return agent_picture;
     }
 
@@ -90,7 +92,7 @@ public class Agent {
         this.phone_no = phone_no;
     }
 
-    public void setAgent_picture(String agent_picture) {
+    public void setAgent_picture(Blob agent_picture) {
         this.agent_picture = agent_picture;
     }
 

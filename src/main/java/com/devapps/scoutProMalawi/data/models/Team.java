@@ -2,6 +2,8 @@ package com.devapps.scoutProMalawi.data.models;
 
 import jakarta.persistence.*;
 
+import java.sql.Blob;
+
 @Entity
 public class Team {
 
@@ -28,7 +30,7 @@ public class Team {
     private String date_joined;
 
     @Column
-    private String team_picture;
+    private Blob team_picture;
 
     public String getTeam_id() {
         return team_id;
@@ -58,7 +60,7 @@ public class Team {
         return email;
     }
 
-    public String getTeam_picture() {
+    public Blob getTeam_picture() {
         return team_picture;
     }
 
@@ -74,7 +76,7 @@ public class Team {
         this.team_name = team_name;
     }
 
-    public void setTeam_picture(String team_picture) {
+    public void setTeam_picture(Blob team_picture) {
         this.team_picture = team_picture;
     }
 
