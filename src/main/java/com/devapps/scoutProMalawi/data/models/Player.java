@@ -2,6 +2,8 @@ package com.devapps.scoutProMalawi.data.models;
 
 import jakarta.persistence.*;
 
+import java.sql.Blob;
+
 @Entity
 public class Player {
 
@@ -19,7 +21,7 @@ public class Player {
     String dob;
 
     @Column
-    String picture;
+    Blob picture;
 
     @Column
     String height;
@@ -63,5 +65,9 @@ public class Player {
 
     public String getWeight() {
         return weight;
+    }
+
+    public Blob getPicture() {
+        return picture;
     }
 }
