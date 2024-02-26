@@ -1,5 +1,6 @@
 package com.devapps.scoutProMalawi.data.controllers;
 
+import com.devapps.scoutProMalawi.Utils.AgentResponse;
 import com.devapps.scoutProMalawi.Utils.TeamResponse;
 import com.devapps.scoutProMalawi.data.models.Team;
 import com.devapps.scoutProMalawi.data.repositories.TeamRepository;
@@ -39,6 +40,17 @@ public class TeamController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(team);
+        }
+    }
+
+    @GetMapping(value = "team/get-team/team-name")
+    public String getTeamByName(@PathVariable String team_name) {
+        String teamName = teamRepository.getTeamName(team_name);
+
+        if(teamName.isEmpty()) {
+            return team_name + "was not found";
+        } else {
+            return teamName;
         }
     }
 

@@ -11,7 +11,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     public Optional<Team> getTeamById(long team_id);
 
-    public String getTeamName(String teamName);
+    public String getTeamName(String team_name);
 
 
 }
