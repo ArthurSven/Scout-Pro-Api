@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/agent")
@@ -16,6 +17,8 @@ public class AgentController {
 @Autowired
     private final AgentRepository agentRepository;
     private final Logger logger = LoggerFactory.getLogger(AgentController.class);
+
+    public List<Agent> agents;
 
     public AgentController(AgentRepository agentRepository) {
         this.agentRepository = agentRepository;
@@ -40,4 +43,25 @@ public class AgentController {
             return agent.getUsername() + "'s account failed to create, please try again";
         }
 }
+
+@GetMapping("/get-agent-id/{agent_id}")
+    public Optional<Agent> getAgentById(@PathVariable long agent_id) {
+        try {
+            return  agentRepository.findById(agent_id);
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving agent Id", e);
+        }
+       return null;
+}
+
+@GetMapping("/get-agent-username/{username}")
+    public Optional<Agent> getAgentByUsername(@PathVariable String username) {
+        try {
+          return  agentRepository.findByUsername(username);
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving " + username + ": " + e);
+        }
+        return null;
+}
+
 }
