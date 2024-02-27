@@ -32,7 +32,7 @@ public class Agent {
     @Column
     private String date_joined;
 
-    @Column
+    @Column(nullable = true)
     private Blob agent_picture;
 
 

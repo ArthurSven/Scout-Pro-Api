@@ -35,6 +35,17 @@ public class Player {
     @Column
     Long agent_id;
 
+    @Column
+    String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getFirstname() {
         return firstname;
     }
