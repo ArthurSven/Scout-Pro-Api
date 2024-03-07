@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/agent")
+@CrossOrigin(origins = "http://localhost:3000") //
 public class AgentController {
 
 @Autowired
