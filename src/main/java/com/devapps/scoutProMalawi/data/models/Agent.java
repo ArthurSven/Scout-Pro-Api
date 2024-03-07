@@ -99,4 +99,8 @@ public class Agent {
     public void setDate_joined(String date_joined) {
         this.date_joined = date_joined;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

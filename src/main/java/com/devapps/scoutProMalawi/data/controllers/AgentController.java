@@ -1,10 +1,12 @@
 package com.devapps.scoutProMalawi.data.controllers;
 
 import com.devapps.scoutProMalawi.data.models.Agent;
+import com.devapps.scoutProMalawi.data.models.ApiResponse;
 import com.devapps.scoutProMalawi.data.repositories.AgentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +20,13 @@ public class AgentController {
 @Autowired
     private final AgentRepository agentRepository;
     private final Logger logger = LoggerFactory.getLogger(AgentController.class);
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public List<Agent> agents;
 
-    public AgentController(AgentRepository agentRepository) {
+    public AgentController(AgentRepository agentRepository, BCryptPasswordEncoder passwordEncoder) {
         this.agentRepository = agentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/agent-list")
@@ -36,13 +40,17 @@ public class AgentController {
     }
 
 @PostMapping("/create-agent")
-    public String createAgent(@RequestBody Agent agent) {
-        try {
-            agentRepository.save(agent);
-            return agent.getUsername() + "'s account has been created";
-        } catch (Exception e) {
-            return agent.getUsername() + "'s account failed to create, please try again";
-        }
+public ApiResponse createAgent(@RequestBody Agent agent) {
+    try {
+        // Hash the password before saving it to the database
+        String hashedPassword = passwordEncoder.encode(agent.getPassword());
+        agent.setPassword(hashedPassword);
+
+        agentRepository.save(agent);
+        return new ApiResponse(true, agent.getUsername() + "'s account has been created");
+    } catch (Exception e) {
+        return new ApiResponse(false, agent.getUsername() + "'s account failed to create, please try again");
+    }
 }
 
 @GetMapping("/get-agent-id/{agent_id}")
