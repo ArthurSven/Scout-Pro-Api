@@ -21,14 +21,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorize -> authorize
+        http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/**").authenticated()
-                        .antMatchers(HttpMethod.POST, "/agent/create-agent").permitAll() // Permit POST to create-agent
+                        .requestMatchers(HttpMethod.POST, "/agent/create-agent").permitAll() // Permit POST to create-agent
                         .anyRequest().permitAll())
                 .sessionManagement(sessionManagementCustomizer -> sessionManagementCustomizer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
+                .csrf(csrfCustomizer -> csrfCustomizer.ignoringRequestMatchers("/agent/create-agent")); // Disable CSRF, form login, and HTTP basic authentication;
 
         return http.build();
     }
