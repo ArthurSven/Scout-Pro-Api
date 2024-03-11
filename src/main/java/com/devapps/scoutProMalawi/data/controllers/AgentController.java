@@ -6,6 +6,8 @@ import com.devapps.scoutProMalawi.data.repositories.AgentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,23 +56,37 @@ public ApiResponse createAgent(@RequestBody Agent agent) {
 }
 
 @GetMapping("/get-agent-id/{agent_id}")
-    public Optional<Agent> getAgentById(@PathVariable long agent_id) {
+    public ResponseEntity<Agent> getAgentById(@PathVariable long agent_id) {
         try {
-            return  agentRepository.findById(agent_id);
+            Optional<Agent> agentIdOptional = agentRepository.findById(agent_id);
+
+            if(agentIdOptional.isPresent()) {
+                Agent agent = agentIdOptional.get();
+                return ResponseEntity.ok(agent);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (Exception e) {
             logger.error("Error occurred while retrieving agent Id", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-       return null;
 }
 
 @GetMapping("/get-agent-username/{username}")
-    public Optional<Agent> getAgentByUsername(@PathVariable String username) {
+    public ResponseEntity<Agent> getAgentByUsername(@PathVariable String username) {
         try {
-          return  agentRepository.findByUsername(username);
+          Optional<Agent> agentOptional = agentRepository.findByUsername(username);
+
+          if(agentOptional.isPresent()) {
+              Agent agent = agentOptional.get();
+              return ResponseEntity.ok(agent);
+          } else {
+              return ResponseEntity.notFound().build();
+          }
         } catch (Exception e) {
             logger.error("Error occurred while retrieving " + username + ": " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return null;
 }
 
 }
