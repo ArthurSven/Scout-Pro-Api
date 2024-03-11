@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/agent")
-@CrossOrigin(origins = "http://localhost:3000") //
+@CrossOrigin(origins = "http://localhost:3000")
 public class AgentController {
 
 @Autowired
@@ -75,7 +75,7 @@ public ApiResponse createAgent(@RequestBody Agent agent) {
 @GetMapping("/get-agent-username/{username}")
     public ResponseEntity<Agent> getAgentByUsername(@PathVariable String username) {
         try {
-          Optional<Agent> agentOptional = agentRepository.findByUsername(username);
+          Optional<Agent> agentOptional = agentRepository.findAgentByUsername(username);
 
           if(agentOptional.isPresent()) {
               Agent agent = agentOptional.get();
@@ -87,6 +87,24 @@ public ApiResponse createAgent(@RequestBody Agent agent) {
             logger.error("Error occurred while retrieving " + username + ": " + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+}
+
+@GetMapping("/agent-email/{email}")
+    public ResponseEntity<Agent> getAgentByEmail(@PathVariable String email) {
+        try {
+            Optional<Agent> agentEmail = agentRepository.findAgentByEmail(email);
+
+            if(agentEmail.isPresent()) {
+                Agent agent = agentEmail.get();
+                return ResponseEntity.ok(agent);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving " + email + ": " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
 }
 
 }

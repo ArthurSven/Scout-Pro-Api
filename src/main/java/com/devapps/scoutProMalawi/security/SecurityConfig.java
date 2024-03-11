@@ -23,13 +23,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/agent/create-agent").permitAll() // Permit POST to create-agent
+                        .requestMatchers(HttpMethod.POST, "/agent/create-agent", "/team/create-team").permitAll() // Permit POST to create-agent
                         .anyRequest().permitAll())
                 .sessionManagement(sessionManagementCustomizer -> sessionManagementCustomizer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
-                .csrf(csrfCustomizer -> csrfCustomizer.ignoringRequestMatchers("/agent/create-agent")); // Disable CSRF, form login, and HTTP basic authentication;
+                .csrf(csrfCustomizer -> csrfCustomizer.ignoringRequestMatchers("/agent/create-agent", "/team/create-team")); // Disable CSRF, form login, and HTTP basic authentication;
 
         return http.build();
     }

@@ -13,5 +13,9 @@ import java.util.Optional;
 public interface AgentRepository extends JpaRepository<Agent, Long> {
 
     @Query("SELECT a FROM Agent a WHERE a.username = :username")
-    Optional<Agent> findByUsername(@Param("username")String username);
+    Optional<Agent> findAgentByUsername(@Param("username")String username);
+
+    @Query("SELECT a FROM Agent a WHERE a.email = :email")
+    Optional<Agent> findAgentByEmail(@Param("email")String email);
+
 }
